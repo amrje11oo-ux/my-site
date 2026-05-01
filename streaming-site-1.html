@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>سينماكس | أفلام ومسلسلات</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@200;300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --red: #e50914;
+    --red-dark: #b20710;
+    --red-glow: rgba(229,9,20,0.4);
+    --black: #0a0a0a;
+    --dark: #111111;
+    --card: #1a1a1a;
+    --gray: #888;
+    --white: #f5f5f5;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 300;
+    background: var(--black);
+    color: var(--white);
+    overflow-x: hidden;
+  }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: var(--dark); }
+  ::-webkit-scrollbar-thumb { background: var(--red); border-radius: 2px; }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; width: 100%; z-index: 100;
+    padding: 18px 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%);
+    backdrop-filter: blur(2px);
+  }
+
+  .logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 3px;
+    color: var(--red);
+    text-shadow: 0 0 30px var(--red-glow);
+  }
+  .logo span { color: var(--white); }
+
+  .nav-links {
+    display: flex; gap: 28px; list-style: none;
+  }
+  .nav-links a {
+    color: #ccc; text-decoration: none; font-size: 0.95rem;
+    font-weight: 300; transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--white); }
+
+  .nav-actions { display: flex; gap: 16px; align-items: center; }
+
+  .search-box {
+    display: flex; align-items: center; gap: 8px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px; padding: 8px 14px;
+    transition: all 0.3s;
+  }
+  .search-box:focus-within {
+    border-color: var(--red);
+    background: rgba(229,9,20,0.08);
+  }
+  .search-box input {
+    background: none; border: none; color: var(--white);
+    font-family: 'Tajawal', sans-serif; font-size: 0.9rem;
+    width: 160px; outline: none;
+  }
+  .search-box input::placeholder { color: #666; }
+
+  .btn-login {
+    background: var(--red); color: white;
+    border: none; padding: 9px 22px;
+    border-radius: 8px; cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700; font-size: 1rem;
+    transition: all 0.2s;
+  }
+  .btn-login:hover {
+    background: var(--red-dark);
+    box-shadow: 0 4px 20px var(--red-glow);
+    transform: translateY(-1px);
+  }
+
+  /* HERO */
+  .hero {
+    position: relative; height: 95vh; min-height: 600px;
+    display: flex; align-items: flex-end;
+    padding: 0 60px 80px;
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      linear-gradient(to top, var(--black) 0%, transparent 50%),
+      linear-gradient(to right, var(--black) 0%, transparent 60%),
+      url('https://images.unsplash.com/photo-1536440136628-849c177e76a1?w=1600&q=80') center/cover no-repeat;
+  }
+
+  .hero-badge {
+    display: inline-block;
+    background: var(--red);
+    color: white; font-size: 0.75rem; font-weight: 900;
+    padding: 4px 12px; border-radius: 4px;
+    letter-spacing: 2px; margin-bottom: 16px;
+    text-transform: uppercase;
+  }
+
+  .hero-content { position: relative; z-index: 2; max-width: 580px; }
+
+  .hero h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: clamp(3.5rem, 7vw, 6rem);
+    line-height: 0.95;
+    letter-spacing: 2px;
+    margin-bottom: 18px;
+    animation: slideUp 0.8s ease forwards;
+  }
+
+  .hero p {
+    color: #bbb; font-size: 1rem; line-height: 1.7;
+    margin-bottom: 30px; font-weight: 300;
+    animation: slideUp 0.8s 0.15s ease both;
+  }
+
+  .hero-meta {
+    display: flex; gap: 20px; align-items: center;
+    margin-bottom: 30px;
+    animation: slideUp 0.8s 0.25s ease both;
+  }
+  .hero-meta span {
+    font-size: 0.85rem; color: #999; font-weight: 600;
+  }
+  .rating {
+    background: rgba(229,9,20,0.2);
+    border: 1px solid var(--red);
+    color: var(--red) !important;
+    padding: 3px 10px; border-radius: 5px;
+  }
+
+  .hero-actions {
+    display: flex; gap: 14px;
+    animation: slideUp 0.8s 0.35s ease both;
+  }
+
+  .btn-play {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--red); color: white;
+    border: none; padding: 14px 30px; border-radius: 10px;
+    cursor: pointer; font-family: 'Tajawal', sans-serif;
+    font-weight: 500; font-size: 1rem;
+    transition: all 0.2s;
+  }
+  .btn-play:hover {
+    background: var(--red-dark);
+    box-shadow: 0 8px 30px var(--red-glow);
+    transform: translateY(-2px);
+  }
+
+  .btn-info {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.1);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: white; padding: 14px 26px; border-radius: 10px;
+    cursor: pointer; font-family: 'Tajawal', sans-serif;
+    font-weight: 500; font-size: 1rem;
+    transition: all 0.2s;
+  }
+  .btn-info:hover {
+    background: rgba(255,255,255,0.18);
+    transform: translateY(-2px);
+  }
+
+  /* SECTIONS */
+  section { padding: 50px 60px; }
+
+  .section-header {
+    display: flex; align-items: center;
+    justify-content: space-between; margin-bottom: 28px;
+  }
+
+  .section-title {
+    font-size: 1.4rem; font-weight: 500;
+    display: flex; align-items: center; gap: 12px;
+  }
+  .section-title::before {
+    content: '';
+    display: block; width: 5px; height: 26px;
+    background: var(--red); border-radius: 3px;
+  }
+
+  .see-all {
+    color: var(--red); text-decoration: none;
+    font-size: 0.9rem; font-weight: 700;
+    transition: color 0.2s;
+  }
+  .see-all:hover { color: #ff3333; }
+
+  /* CARDS ROW */
+  .cards-row {
+    display: flex; gap: 18px; overflow-x: auto;
+    padding-bottom: 12px; scroll-snap-type: x mandatory;
+  }
+  .cards-row::-webkit-scrollbar { height: 3px; }
+  .cards-row::-webkit-scrollbar-thumb { background: var(--red); }
+
+  .card {
+    flex: 0 0 200px; border-radius: 12px;
+    overflow: hidden; position: relative;
+    cursor: pointer; scroll-snap-align: start;
+    transition: transform 0.3s, box-shadow 0.3s;
+    background: var(--card);
+  }
+  .card:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 1px var(--red);
+  }
+
+  .card-img {
+    width: 100%; aspect-ratio: 2/3;
+    object-fit: cover; display: block;
+    background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460);
+  }
+
+  .card-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.95) 0%, transparent 55%);
+    opacity: 0; transition: opacity 0.3s;
+    display: flex; flex-direction: column;
+    justify-content: flex-end; padding: 14px;
+  }
+  .card:hover .card-overlay { opacity: 1; }
+
+  .card-play {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--red); border: none;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; margin-bottom: 10px;
+    transition: transform 0.2s;
+  }
+  .card-play:hover { transform: scale(1.1); }
+
+  .card-title-overlay {
+    font-weight: 700; font-size: 0.9rem; margin-bottom: 4px;
+  }
+  .card-meta-overlay { font-size: 0.75rem; color: #aaa; }
+
+  .card-info { padding: 12px; }
+  .card-title { font-weight: 400; font-size: 0.9rem; margin-bottom: 5px; }
+  .card-meta { display: flex; gap: 8px; align-items: center; }
+  .card-year { font-size: 0.75rem; color: var(--gray); }
+  .card-rating {
+    font-size: 0.7rem; font-weight: 700;
+    background: var(--red); color: white;
+    padding: 2px 7px; border-radius: 4px;
+  }
+  .card-type {
+    font-size: 0.7rem; color: #777;
+    border: 1px solid #333; padding: 2px 7px; border-radius: 4px;
+  }
+
+  /* FAKE IMAGES with gradients */
+  .img-1 { background: linear-gradient(135deg, #1a0a0a 0%, #3d0000 40%, #8b0000 100%); }
+  .img-2 { background: linear-gradient(135deg, #0a0a1a 0%, #000033 40%, #001a6b 100%); }
+  .img-3 { background: linear-gradient(135deg, #0a1a0a 0%, #003300 40%, #006b00 100%); }
+  .img-4 { background: linear-gradient(135deg, #1a1a00 0%, #333300 40%, #6b6b00 100%); }
+  .img-5 { background: linear-gradient(135deg, #1a000a 0%, #330033 40%, #6b006b 100%); }
+  .img-6 { background: linear-gradient(135deg, #001a1a 0%, #003333 40%, #006b6b 100%); }
+  .img-7 { background: linear-gradient(135deg, #0a0505 0%, #2d1515 40%, #5a1a1a 100%); }
+  .img-8 { background: linear-gradient(135deg, #050a0a 0%, #15252d 40%, #1a3d5a 100%); }
+
+  .img-placeholder {
+    width: 100%; aspect-ratio: 2/3;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 3.5rem;
+  }
+
+  /* FEATURED ROW - wider cards */
+  .wide-card {
+    flex: 0 0 320px; border-radius: 14px;
+    overflow: hidden; position: relative;
+    cursor: pointer; scroll-snap-align: start;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  .wide-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.7), 0 0 0 1px var(--red);
+  }
+  .wide-img {
+    width: 100%; aspect-ratio: 16/9;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+  }
+  .wide-overlay {
+    position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 60%);
+    padding: 18px;
+    display: flex; flex-direction: column; justify-content: flex-end;
+  }
+  .wide-badge {
+    background: var(--red); color: white;
+    font-size: 0.65rem; font-weight: 900;
+    padding: 3px 9px; border-radius: 4px;
+    letter-spacing: 1px; width: fit-content;
+    margin-bottom: 8px; text-transform: uppercase;
+  }
+  .wide-title { font-weight: 900; font-size: 1.1rem; margin-bottom: 5px; }
+  .wide-meta { font-size: 0.8rem; color: #aaa; }
+
+  /* CATEGORIES */
+  .categories {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    margin-bottom: 10px;
+  }
+  .cat-btn {
+    background: var(--card); border: 1px solid #2a2a2a;
+    color: #ccc; padding: 9px 20px; border-radius: 25px;
+    cursor: pointer; font-family: 'Tajawal', sans-serif;
+    font-size: 0.85rem; font-weight: 400;
+    transition: all 0.2s;
+  }
+  .cat-btn:hover, .cat-btn.active {
+    background: var(--red); border-color: var(--red);
+    color: white; box-shadow: 0 4px 15px var(--red-glow);
+  }
+
+  /* FOOTER */
+  footer {
+    background: #0d0d0d;
+    border-top: 1px solid #1a1a1a;
+    padding: 50px 60px 30px;
+    margin-top: 30px;
+  }
+  .footer-grid {
+    display: grid; grid-template-columns: 2fr 1fr 1fr 1fr;
+    gap: 40px; margin-bottom: 40px;
+  }
+  .footer-logo {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem; letter-spacing: 3px;
+    color: var(--red); margin-bottom: 14px;
+  }
+  .footer-desc { color: #666; font-size: 0.9rem; line-height: 1.7; }
+  .footer-heading {
+    font-weight: 700; margin-bottom: 18px;
+    font-size: 0.95rem; color: var(--white);
+  }
+  .footer-links { list-style: none; }
+  .footer-links li { margin-bottom: 10px; }
+  .footer-links a {
+    color: #666; text-decoration: none; font-size: 0.85rem;
+    transition: color 0.2s;
+  }
+  .footer-links a:hover { color: var(--red); }
+  .footer-bottom {
+    border-top: 1px solid #1a1a1a; padding-top: 24px;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+  .footer-copy { color: #444; font-size: 0.8rem; }
+  .social-links { display: flex; gap: 12px; }
+  .social-btn {
+    width: 36px; height: 36px; border-radius: 8px;
+    background: #1a1a1a; border: 1px solid #2a2a2a;
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; transition: all 0.2s; font-size: 1rem;
+  }
+  .social-btn:hover {
+    background: var(--red); border-color: var(--red);
+    transform: translateY(-2px);
+  }
+
+  /* ANIMATIONS */
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px; background: linear-gradient(to right, transparent, #2a2a2a, transparent);
+    margin: 0 60px;
+  }
+
+  /* TOP 10 */
+  .top10-card {
+    flex: 0 0 160px; position: relative;
+    cursor: pointer; scroll-snap-align: start;
+    transition: transform 0.3s;
+  }
+  .top10-card:hover { transform: translateY(-6px); }
+  .top10-number {
+    position: absolute; bottom: 28px; right: -12px;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 6rem; line-height: 1;
+    color: transparent;
+    -webkit-text-stroke: 2px #333;
+    z-index: 2;
+  }
+  .top10-card:hover .top10-number { -webkit-text-stroke-color: var(--red); }
+  .top10-img {
+    width: 100%; aspect-ratio: 2/3;
+    border-radius: 10px; overflow: hidden;
+    display: flex; align-items: center;
+    justify-content: center; font-size: 3rem;
+    position: relative; z-index: 1;
+  }
+
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links { display: none; }
+    .hero { padding: 0 20px 60px; }
+    section { padding: 40px 20px; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+    .divider { margin: 0 20px; }
+    .logo { font-size: 1.6rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">سينما<span>كس</span></div>
+  <ul class="nav-links">
+    <li><a href="#">الرئيسية</a></li>
+    <li><a href="#">أفلام</a></li>
+    <li><a href="#">مسلسلات</a></li>
+    <li><a href="#">عربي</a></li>
+    <li><a href="#">عالمي</a></li>
+    <li><a href="#">قائمتي</a></li>
+  </ul>
+  <div class="nav-actions">
+    <div class="search-box">
+      <svg width="15" height="15" fill="none" stroke="#888" stroke-width="2" viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" placeholder="ابحث عن فيلم أو مسلسل...">
+    </div>
+    <button class="btn-login">تسجيل الدخول</button>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-badge">🔥 الأكثر مشاهدة هذا الأسبوع</div>
+    <h1>OPPENHEIMER</h1>
+    <p>الرجل الذي غيّر مسار التاريخ إلى الأبد. قصة مثيرة ومذهلة عن أعظم علماء القرن العشرين، بين العبقرية والمسؤولية الأخلاقية.</p>
+    <div class="hero-meta">
+      <span class="rating">⭐ 8.9</span>
+      <span>3 ساعة 1 دقيقة</span>
+      <span>2023</span>
+      <span>دراما • تاريخي</span>
+    </div>
+    <div class="hero-actions">
+      <button class="btn-play">
+        <svg width="18" height="18" fill="white" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
+        شاهد الآن
+      </button>
+      <button class="btn-info">
+        <svg width="18" height="18" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        مزيد من المعلومات
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- CATEGORIES -->
+<section style="padding-bottom: 10px;">
+  <div class="categories">
+    <button class="cat-btn active">الكل</button>
+    <button class="cat-btn">أكشن</button>
+    <button class="cat-btn">دراما</button>
+    <button class="cat-btn">كوميديا</button>
+    <button class="cat-btn">رعب</button>
+    <button class="cat-btn">رومانسي</button>
+    <button class="cat-btn">خيال علمي</button>
+    <button class="cat-btn">وثائقي</button>
+    <button class="cat-btn">رسوم متحركة</button>
+  </div>
+</section>
+
+<!-- TRENDING -->
+<section>
+  <div class="section-header">
+    <h2 class="section-title">🔥 الأكثر رواجاً</h2>
+    <a href="#" class="see-all">عرض الكل ←</a>
+  </div>
+  <div class="cards-row">
+
+    <div class="card">
+      <div class="img-placeholder img-1">🎭</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">الحشاشين</div>
+        <div class="card-meta-overlay">2024 • دراما تاريخية</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">الحشاشين</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 8.7</span>
+          <span class="card-year">2024</span>
+          <span class="card-type">مسلسل</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-2">🚀</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">Dune: Part Two</div>
+        <div class="card-meta-overlay">2024 • خيال علمي</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Dune: Part Two</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 8.5</span>
+          <span class="card-year">2024</span>
+          <span class="card-type">فيلم</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-3">🌿</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">بيت الرفاعي</div>
+        <div class="card-meta-overlay">2024 • دراما اجتماعية</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">بيت الرفاعي</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 8.2</span>
+          <span class="card-year">2024</span>
+          <span class="card-type">مسلسل</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-4">⚡</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">The Boys S4</div>
+        <div class="card-meta-overlay">2024 • أكشن • كوميديا</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">The Boys S4</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 8.4</span>
+          <span class="card-year">2024</span>
+          <span class="card-type">مسلسل</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-5">🔮</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">جن 2</div>
+        <div class="card-meta-overlay">2024 • رعب • إثارة</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">جن 2</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 7.9</span>
+          <span class="card-year">2024</span>
+          <span class="card-type">فيلم</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-6">🌊</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">Shogun</div>
+        <div class="card-meta-overlay">2024 • دراما تاريخية</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Shogun</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 9.0</span>
+          <span class="card-year">2024</span>
+          <span class="card-type">مسلسل</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-7">🎪</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">نصيبي وقسمتك</div>
+        <div class="card-meta-overlay">2024 • رومانسي • كوميدي</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">نصيبي وقسمتك</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 7.5</span>
+          <span class="card-year">2024</span>
+          <span class="card-type">مسلسل</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-8">🌙</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">Ripley</div>
+        <div class="card-meta-overlay">2024 • إثارة • جريمة</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">Ripley</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 8.3</span>
+          <span class="card-year">2024</span>
+          <span class="card-type">مسلسل</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TOP 10 -->
+<section>
+  <div class="section-header">
+    <h2 class="section-title">🏆 TOP 10 اليوم</h2>
+    <a href="#" class="see-all">عرض الكل ←</a>
+  </div>
+  <div class="cards-row">
+
+    <div class="top10-card">
+      <div class="top10-number">1</div>
+      <div class="top10-img img-1">🎭</div>
+    </div>
+    <div class="top10-card">
+      <div class="top10-number">2</div>
+      <div class="top10-img img-6">🌊</div>
+    </div>
+    <div class="top10-card">
+      <div class="top10-number">3</div>
+      <div class="top10-img img-2">🚀</div>
+    </div>
+    <div class="top10-card">
+      <div class="top10-number">4</div>
+      <div class="top10-img img-4">⚡</div>
+    </div>
+    <div class="top10-card">
+      <div class="top10-number">5</div>
+      <div class="top10-img img-3">🌿</div>
+    </div>
+    <div class="top10-card">
+      <div class="top10-number">6</div>
+      <div class="top10-img img-8">🌙</div>
+    </div>
+    <div class="top10-card">
+      <div class="top10-number">7</div>
+      <div class="top10-img img-5">🔮</div>
+    </div>
+    <div class="top10-card">
+      <div class="top10-number">8</div>
+      <div class="top10-img img-7">🎪</div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- NEW RELEASES -->
+<section>
+  <div class="section-header">
+    <h2 class="section-title">🆕 إضافات جديدة</h2>
+    <a href="#" class="see-all">عرض الكل ←</a>
+  </div>
+  <div class="cards-row">
+
+    <div class="wide-card">
+      <div class="wide-img img-2" style="aspect-ratio:16/9">🚀</div>
+      <div class="wide-overlay">
+        <div class="wide-badge">جديد</div>
+        <div class="wide-title">A Quiet Place: Day One</div>
+        <div class="wide-meta">⭐ 7.8 • 2024 • رعب • إثارة</div>
+      </div>
+    </div>
+
+    <div class="wide-card">
+      <div class="wide-img img-1" style="aspect-ratio:16/9">🎭</div>
+      <div class="wide-overlay">
+        <div class="wide-badge">حصري</div>
+        <div class="wide-title">المداح - الجزء الرابع</div>
+        <div class="wide-meta">⭐ 8.1 • 2024 • دراما • إثارة</div>
+      </div>
+    </div>
+
+    <div class="wide-card">
+      <div class="wide-img img-5" style="aspect-ratio:16/9">🔮</div>
+      <div class="wide-overlay">
+        <div class="wide-badge">جديد</div>
+        <div class="wide-title">Alien: Romulus</div>
+        <div class="wide-meta">⭐ 7.4 • 2024 • رعب • خيال علمي</div>
+      </div>
+    </div>
+
+    <div class="wide-card">
+      <div class="wide-img img-3" style="aspect-ratio:16/9">🌿</div>
+      <div class="wide-overlay">
+        <div class="wide-badge">حصري</div>
+        <div class="wide-title">طريق الحرير</div>
+        <div class="wide-meta">⭐ 8.5 • 2024 • مغامرة • تاريخي</div>
+      </div>
+    </div>
+
+    <div class="wide-card">
+      <div class="wide-img img-6" style="aspect-ratio:16/9">🌊</div>
+      <div class="wide-overlay">
+        <div class="wide-badge">جديد</div>
+        <div class="wide-title">Inside Out 2</div>
+        <div class="wide-meta">⭐ 7.9 • 2024 • رسوم متحركة</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ARABIC SERIES -->
+<section>
+  <div class="section-header">
+    <h2 class="section-title">🌙 مسلسلات عربية</h2>
+    <a href="#" class="see-all">عرض الكل ←</a>
+  </div>
+  <div class="cards-row">
+
+    <div class="card">
+      <div class="img-placeholder img-1">🎭</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">الحشاشين</div>
+        <div class="card-meta-overlay">مصر • تاريخي</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">الحشاشين</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 8.7</span>
+          <span class="card-year">مصر</span>
+          <span class="card-type">30 حلقة</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-4">⚡</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">عملة نادرة</div>
+        <div class="card-meta-overlay">سعودية • جريمة</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">عملة نادرة</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 8.0</span>
+          <span class="card-year">السعودية</span>
+          <span class="card-type">20 حلقة</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-7">🎪</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">بشرة خير</div>
+        <div class="card-meta-overlay">مصر • كوميديا</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">بشرة خير</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 7.6</span>
+          <span class="card-year">مصر</span>
+          <span class="card-type">15 حلقة</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-3">🌿</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">وتان</div>
+        <div class="card-meta-overlay">سعودية • دراما</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">وتان</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 8.3</span>
+          <span class="card-year">السعودية</span>
+          <span class="card-type">12 حلقة</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-5">🔮</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">هجمة مرتدة</div>
+        <div class="card-meta-overlay">مصر • رياضة</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">هجمة مرتدة</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 8.1</span>
+          <span class="card-year">مصر</span>
+          <span class="card-type">مسلسل</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="img-placeholder img-6">🌊</div>
+      <div class="card-overlay">
+        <button class="card-play">▶</button>
+        <div class="card-title-overlay">النهاية</div>
+        <div class="card-meta-overlay">مصر • خيال علمي</div>
+      </div>
+      <div class="card-info">
+        <div class="card-title">النهاية</div>
+        <div class="card-meta">
+          <span class="card-rating">⭐ 7.8</span>
+          <span class="card-year">مصر</span>
+          <span class="card-type">15 حلقة</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div>
+      <div class="footer-logo">سينماكس</div>
+      <p class="footer-desc">منصتك الأولى لمشاهدة أفضل الأفلام والمسلسلات العربية والعالمية بجودة عالية وبدون انقطاع.</p>
+    </div>
+    <div>
+      <div class="footer-heading">روابط سريعة</div>
+      <ul class="footer-links">
+        <li><a href="#">الرئيسية</a></li>
+        <li><a href="#">أفلام</a></li>
+        <li><a href="#">مسلسلات</a></li>
+        <li><a href="#">عربي</a></li>
+        <li><a href="#">عالمي</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">المساعدة</div>
+      <ul class="footer-links">
+        <li><a href="#">الأسئلة الشائعة</a></li>
+        <li><a href="#">تواصل معنا</a></li>
+        <li><a href="#">الاشتراكات</a></li>
+        <li><a href="#">الدعم الفني</a></li>
+      </ul>
+    </div>
+    <div>
+      <div class="footer-heading">قانوني</div>
+      <ul class="footer-links">
+        <li><a href="#">سياسة الخصوصية</a></li>
+        <li><a href="#">شروط الاستخدام</a></li>
+        <li><a href="#">حقوق الملكية</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div class="footer-copy">© 2024 سينماكس. جميع الحقوق محفوظة.</div>
+    <div class="social-links">
+      <div class="social-btn">𝕏</div>
+      <div class="social-btn">📘</div>
+      <div class="social-btn">📸</div>
+      <div class="social-btn">▶️</div>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Category filter buttons
+  document.querySelectorAll('.cat-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('.cat-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+    });
+  });
+
+  // Smooth nav scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.querySelector('nav');
+    if (window.scrollY > 50) {
+      nav.style.background = 'rgba(0,0,0,0.97)';
+      nav.style.boxShadow = '0 2px 20px rgba(0,0,0,0.5)';
+    } else {
+      nav.style.background = 'linear-gradient(to bottom, rgba(0,0,0,0.95) 0%, transparent 100%)';
+      nav.style.boxShadow = 'none';
+    }
+  });
+
+  // Card click feedback
+  document.querySelectorAll('.card, .wide-card, .top10-card').forEach(card => {
+    card.addEventListener('click', () => {
+      card.style.transform = 'scale(0.97)';
+      setTimeout(() => { card.style.transform = ''; }, 150);
+    });
+  });
+</script>
+
+</body>
+</html>
